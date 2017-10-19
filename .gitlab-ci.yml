@@ -36,12 +36,24 @@ build:
 test-1:
   stage: test
   script:
+    - export AWS_ACCESS_KEY_ID=$BUILD_ACCESS_KEY
+    - export AWS_SECRET_ACCESS_KEY=$BUILD_SECRET_KEY
+    - export AWS_DEFAULT_REGION=$AWS_ECR_REGION
+    - export AWS_DEFAULT_OUTPUT=json
+    - login_string=`/usr/local/bin/aws ecr get-login --no-include-email`
+    - eval $login_string;
     - docker pull $CONTAINER_TEST_IMAGE
     - docker run $CONTAINER_TEST_IMAGE npm list
 
 release-image:
   stage: release
   script:
+    - export AWS_ACCESS_KEY_ID=$BUILD_ACCESS_KEY
+    - export AWS_SECRET_ACCESS_KEY=$BUILD_SECRET_KEY
+    - export AWS_DEFAULT_REGION=$AWS_ECR_REGION
+    - export AWS_DEFAULT_OUTPUT=json
+    - login_string=`/usr/local/bin/aws ecr get-login --no-include-email`
+    - eval $login_string;
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
