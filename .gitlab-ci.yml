@@ -1,0 +1,40 @@
+image: docker:latest
+
+services:
+- docker:dind
+
+stages:
+- build
+- test
+- release
+
+# When using dind, it's wise to use the overlayfs driver for
+# improved performance.
+variables:
+  DOCKER_DRIVER: overlay2
+  CONTAINER_TEST_IMAGE: 288840635390.dkr.ecr.us-east-1.amazonaws.com/myfirstapp:$CI_COMMIT_REF_NAME
+  CONTAINER_RELEASE_IMAGE: 288840635390.dkr.ecr.us-east-1.amazonaws.com/myfirstapp:latest
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.example.com
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+test-1:
+  stage: test
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE npm list
+
+release-image:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
