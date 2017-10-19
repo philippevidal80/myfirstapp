@@ -46,3 +46,19 @@ release-image:
     - docker push $CONTAINER_RELEASE_IMAGE
   only:
     - master
+
+deploy:
+  stage: deploy
+  before_script:
+    - curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    - python get-pip.py
+    - pip install awscli --ignore-installed six
+    - export AWS_ACCESS_KEY_ID=$BUILD_ACCESS_KEY
+    - export AWS_SECRET_ACCESS_KEY=$BUILD_SECRET_KEY
+    - export AWS_DEFAULT_REGION=$AWS_ECR_REGION
+    - export AWS_DEFAULT_OUTPUT=json
+  script:
+    - service=$(aws ecs list-services --cluster ECS-MyFirstApp-PVL | grep -i myfirstapp | cut -f2 -d/ | sed 's/.$//')
+    - aws ecs update-service --cluster ECS-MyFirstApp-PVL --service $service
+  only:
+    - master
