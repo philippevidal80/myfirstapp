@@ -1,0 +1,17 @@
+{
+  "name": "myfirstapp",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Philippe Vidal <philippe.vidal@skale-5.com>",
+  "main": "myfirstapp.js",
+  "scripts": {
+    "start": "node myfirstapp.js"
+  },
+  "dependencies": {
+    "http": "latest",
+    "url": "latest",
+    "fs": "latest",
+    "os": "latest",
+    "socket.io": "latest"
+  }
+}
