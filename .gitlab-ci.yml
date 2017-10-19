@@ -16,7 +16,7 @@ variables:
   CONTAINER_RELEASE_IMAGE: 288840635390.dkr.ecr.us-east-1.amazonaws.com/myfirstapp:latest
 
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.example.com
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN 288840635390.dkr.ecr.us-east-1.amazonaws.com
 
 build:
   stage: build
