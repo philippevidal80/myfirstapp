@@ -11,7 +11,7 @@
         switch(path){
             case '/':
                 response.writeHead(200, {'Content-Type': 'text/html'});
-                response.write('<p>Hello World ! I\'m container '+hostname+' and ready to serve you. :)</p><p>Test this link: <a href="socket.html">Socket.IO</a></p>');
+                response.write('<p>Hello World ! I\'m container '+hostname+' and ready to serve you. :)</p><p>Test this link: <a href="socket.html">Socket.IO</a></p><p>New block added on friday, october the 20th</p>');
                 response.end();
                 break;
             case '/socket.html':
