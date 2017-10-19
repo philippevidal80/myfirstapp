@@ -61,7 +61,12 @@ deploy:
   script:
     - service=$(aws ecs list-services --cluster ECS-MyFirstApp-PVL | grep -i myfirstapp | cut -f2 -d/ | sed 's/.$//')
     - old=$(aws ecs describe-task-definition --task-definition arn:aws:ecs:us-east-1:288840635390:task-definition/myfirstapp)
-    - new=$(echo ${old} | python <(cat <<-EOF \n import sys, json \n definition = json.load(sys.stdin)['taskDefinition']['containerDefinitions'] \n print json.dumps(definition) \n EOF \n))
+    - new=$(echo ${old} | python <(cat <<-EOF
+      import sys, json
+      definition = json.load(sys.stdin)['taskDefinition']['containerDefinitions']
+      print json.dumps(definition)
+      EOF
+      ))
     - aws ecs update-service --cluster ECS-MyFirstApp-PVL --service $service  --task-definition arn:aws:ecs:us-east-1:288840635390:task-definition/myfirstapp
   only:
     - master
