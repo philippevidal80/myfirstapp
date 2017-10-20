@@ -11,9 +11,23 @@
         switch(path){
             case '/':
                 response.writeHead(200, {'Content-Type': 'text/html'});
-                response.write('<p>Hello World ! I\'m container '+hostname+' and ready to serve you. :)</p><p>Test this link: <a href="socket.html">Socket.IO</a></p><p>New block added on friday, october the 20th</p>');
+                response.write('<p>Hello World ! I\'m container '+hostname+' and ready to serve you. :)</p><p>Test this link: <a href="socket.html">Socket.IO</a></p><p>New block added on friday, october the 20th</p><p><img src="studio_ghibli.png"></p>');
                 response.end();
                 break;
+                case '/studio_ghibli.png':
+                    fs.readFile(__dirname + path, function(error, data){
+                        if (error){
+                            response.writeHead(404);
+                            response.write("opps this doesn't exist - 404");
+                            response.end();
+                        }
+                        else{
+                            response.writeHead(200, {"Content-Type": "image/x-png"});
+                            response.write(data);
+                            response.end();
+                        }
+                    });
+                    break;
             case '/socket.html':
                 fs.readFile(__dirname + path, function(error, data){
                     if (error){
