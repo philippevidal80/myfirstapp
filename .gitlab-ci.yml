@@ -62,7 +62,7 @@ deploy:
     - service=$(aws ecs list-services --cluster ECS-MyFirstApp-PVL | grep -i myfirstapp | cut -f2 -d/ | sed 's/.$//')
     - old=$(aws ecs describe-task-definition --task-definition arn:aws:ecs:us-east-1:288840635390:task-definition/myfirstapp)
     - new=$(echo ${old} | python <(echo -e "import sys, json\ndefinition = json.load(sys.stdin)['taskDefinition']['containerDefinitions']\nprint json.dumps(definition)"))
-    - aws ecs register-task-definition --family "myfirstapp" --container-definitions "$new"
+    - aws ecs register-task-definition --family "myfirstapp" --container-definitions '$new'
     - aws ecs update-service --cluster ECS-MyFirstApp-PVL --service $service  --task-definition arn:aws:ecs:us-east-1:288840635390:task-definition/myfirstapp
   only:
     - master
